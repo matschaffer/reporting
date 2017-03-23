@@ -2,7 +2,7 @@
 
 set -e
 
-VERSION=0.22.1
+VERSION=0.23.0
 JAR=/opt/metabase-${VERSION}.jar
 
 if [[ -f ${JAR} ]]; then
