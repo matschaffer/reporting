@@ -14,6 +14,8 @@ blocks:
       env_vars:
       - name: BRANCH_NAME
         value: ${SEMAPHORE_GIT_BRANCH}
+      - name: SEMAPHORE_BUILD_NUMBER
+        value: ${SEMAPHORE_JOB_ID}
       jobs:
       - name: Package
         commands:
