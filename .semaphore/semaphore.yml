@@ -8,7 +8,10 @@ agent:
 blocks:
   - name: "Build"
     task:
+      prologue:
+        commands:
+        - checkout
       jobs:
       - name: Package
         commands:
-          - .elasticbeanstalk/package.sh ${SEMAPHORE_PROJECT_NAME}
+        - .elasticbeanstalk/package.sh ${SEMAPHORE_PROJECT_NAME}
