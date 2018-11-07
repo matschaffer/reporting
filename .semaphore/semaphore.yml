@@ -6,11 +6,14 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: "Build"
+  - name: "Main"
     task:
       prologue:
         commands:
         - checkout
+      env_vars:
+      - name: BRANCH_NAME
+        value: ${SEMAPHORE_GIT_BRANCH}
       jobs:
       - name: Package
         commands:
