@@ -28,7 +28,7 @@ PACKAGE="${VERSION}.zip"
 
 if [[ "${CREATE_APPLICATION_VERSION}" == "true" ]]; then
     echo "Creating application version ${VERSION}..."
-    cache restore "app_versions_${SEMAPHORE_BUILD_NUMBER}"
+    cache restore "app_version_${SEMAPHORE_BUILD_NUMBER}"
     aws s3 cp --no-progress ".elasticbeanstalk/app_versions/${PACKAGE}" "s3://${S3_BUCKET_NAME}/${EB_APP_NAME}/"
     aws elasticbeanstalk create-application-version \
       --region "${AWS_DEFAULT_REGION}" \
