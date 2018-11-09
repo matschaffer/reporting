@@ -4,22 +4,23 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
+
 blocks:
   - name: Deploy
     task:
       secrets:
-        - name: aws-dev
+      - name: aws-dev
       env_vars:
-       - name: S3_BUCKET_NAME
-         value: elasticbeanstalk-us-west-2-985752656544
-       - name: EB_ENV_NAME
-         value: safecastrpt-prd
-       - name: EB_APP_NAME
-         value: reporting
-       - name: AWS_DEFAULT_REGION
-         value: us-west-2
-       - name: CREATE_APPLICATION_VERSION
-         value: true
+      - name: S3_BUCKET_NAME
+        value: elasticbeanstalk-us-west-2-985752656544
+      - name: EB_ENV_NAME
+        value: safecastrpt-prd
+      - name: EB_APP_NAME
+        value: reporting
+      - name: AWS_DEFAULT_REGION
+        value: us-west-2
+      - name: CREATE_APPLICATION_VERSION
+        value: "true"
       jobs:
       - name: Deploy
         commands:
