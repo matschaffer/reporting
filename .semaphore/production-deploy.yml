@@ -6,7 +6,7 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: Deploy
+  - name: Main
     task:
       secrets:
       - name: aws-dev
@@ -21,6 +21,9 @@ blocks:
         value: us-west-2
       - name: CREATE_APPLICATION_VERSION
         value: "true"
+      prologue:
+        commands:
+        - checkout
       jobs:
       - name: Deploy
         commands:
