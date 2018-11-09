@@ -20,5 +20,4 @@ PACKAGE="${EB_APP_NAME}-${BRANCH_NAME}-${SEMAPHORE_BUILD_NUMBER}.zip"
 
 .elasticbeanstalk/package.py "${PACKAGE}"
 
-mkdir -p .semaphore-cache/artifacts
-cp ".elasticbeanstalk/app_versions/${PACKAGE}" .semaphore-cache/artifacts
+cache store app_versions .elasticbeanstalk/app_versions

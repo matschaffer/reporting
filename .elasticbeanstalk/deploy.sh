@@ -25,9 +25,11 @@ SEMAPHORE_BUILD_NUMBER="${SEMAPHORE_BUILD_NUMBER:-${SEMAPHORE_JOB_ID}}"
 VERSION="${EB_APP_NAME}-${BRANCH_NAME}-${SEMAPHORE_BUILD_NUMBER}"
 PACKAGE="${VERSION}.zip"
 
+cache restore app_versions
+
 if [[ "${CREATE_APPLICATION_VERSION}" == "true" ]]; then
     echo "Creating application version ${VERSION}..."
-    aws s3 cp --no-progress ".semaphore-cache/artifacts/${PACKAGE}" "s3://${S3_BUCKET_NAME}/${EB_APP_NAME}/"
+    aws s3 cp --no-progress ".elasticbeanstalk/app_versions/${PACKAGE}" "s3://${S3_BUCKET_NAME}/${EB_APP_NAME}/"
     aws elasticbeanstalk create-application-version \
       --region "${AWS_DEFAULT_REGION}" \
       --application-name "${EB_APP_NAME}" \
@@ -40,4 +42,6 @@ echo "Deploying ${VERSION} to ${EB_ENV_NAME}..."
 eb deploy --quiet "${EB_ENV_NAME}" --version "${VERSION}" --timeout 20
 
 echo "Cleaning up any build artifacts older than 90 days"
-find ".semaphore-cache/artifacts" -type f -mmin "${ARTIFACT_EXPIRATION}" -delete
+find ".elasticbeanstalk/app_versions" -type f -mmin "${ARTIFACT_EXPIRATION}" -delete
+
+cache store app_versions .elasticbeanstalk/app_versions
