@@ -20,4 +20,4 @@ PACKAGE="${EB_APP_NAME}-${BRANCH_NAME}-${SEMAPHORE_BUILD_NUMBER}.zip"
 
 .elasticbeanstalk/package.py "${PACKAGE}"
 
-cache store app_versions .elasticbeanstalk/app_versions
+cache store "app_version_${SEMAPHORE_BUILD_NUMBER}" .elasticbeanstalk/app_versions
