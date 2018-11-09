@@ -25,7 +25,6 @@ SEMAPHORE_BUILD_NUMBER="${SEMAPHORE_BUILD_NUMBER:-${SEMAPHORE_WORKFLOW_ID}}"
 VERSION="${EB_APP_NAME}-${BRANCH_NAME}-${SEMAPHORE_BUILD_NUMBER}"
 PACKAGE="${VERSION}.zip"
 
-
 if [[ "${CREATE_APPLICATION_VERSION}" == "true" ]]; then
     echo "Creating application version ${VERSION}..."
     cache restore "app_version_${SEMAPHORE_BUILD_NUMBER}"
@@ -37,6 +36,11 @@ if [[ "${CREATE_APPLICATION_VERSION}" == "true" ]]; then
       --source-bundle "S3Bucket=${S3_BUCKET_NAME},S3Key=${EB_APP_NAME}/${PACKAGE}" \
       --process
 fi
+
+# Work around https://github.com/aws/aws-cli/issues/3550 in current install of ebcli in semaphore
+virtualenv venv
+source venv/bin/activate
+pip install awsebcli
 
 echo "Deploying ${VERSION} to ${EB_ENV_NAME}..."
 eb deploy --quiet "${EB_ENV_NAME}" --version "${VERSION}" --timeout 20
