@@ -15,3 +15,7 @@ blocks:
       - name: Package
         commands:
         - .elasticbeanstalk/package.sh ${SEMAPHORE_PROJECT_NAME}
+
+promotions:
+  - name: Production deploy
+    pipeline_file: production-deploy.yml
