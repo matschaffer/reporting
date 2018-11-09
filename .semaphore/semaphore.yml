@@ -6,16 +6,18 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: Main
-    task:
-      prologue:
-        commands:
-        - checkout
-      jobs:
-      - name: Package
-        commands:
-        - .elasticbeanstalk/package.sh ${SEMAPHORE_PROJECT_NAME}
+- name: Main
+  task:
+    prologue:
+      commands:
+      - checkout
+    jobs:
+    - name: Package
+      commands:
+      - .elasticbeanstalk/package.sh ${SEMAPHORE_PROJECT_NAME}
 
 promotions:
-  - name: Production deploy
-    pipeline_file: production-deploy.yml
+- name: Production deploy
+  pipeline_file: production-deploy.yml
+  auto_promote_on:
+  - result: passed
