@@ -19,3 +19,5 @@ sudo yum install grafana-7.1.0-4759a6d7pre.x86_64.rpm
 
 /sbin/chkconfig --add grafana-server
 /sbin/service grafana-server start
+
+ls -ll -a
