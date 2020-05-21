@@ -9,15 +9,15 @@ workflows:
   # Name the workflow "welcome"
   welcome:
     # Run the welcome/run job in its own container
-	jobs:
-	  build:
-		docker:
-		  - image: nginx:stable
+jobs:
+    build:
+        docker:
+            - image: nginx:stable
 
-	working_directory: ~/repo
+         working_directory: ~/repo
 
-	steps:
-	  - checkout
-	  - run: echo $PATH
-	  - run: nginx
-	  - run: nginx -v
+         steps:
+	   - checkout
+	   - run: echo $PATH
+           - run: nginx
+	   - run: nginx -v
