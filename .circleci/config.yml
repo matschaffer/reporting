@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: https://github.com/CentOS/sig-cloud-instance-images/blob/52cc14a6dd2efc45265417a4690964d32cf13857/docker/Dockerfile
+      - image: https://github.com/CentOS/sig-cloud-instance-images/blob/52cc14a6dd2efc45265417a4690964d32cf13857/docker/dockerfile
     steps:
       - checkout
       - run: |
