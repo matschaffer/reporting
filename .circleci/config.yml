@@ -4,8 +4,5 @@ jobs:
     machine:
       image: 'ubuntu-1604:201903-01'
     steps:
-      - run:
-       shell: /bin/sh
-       command: |
-          echo Running test
-          mkdir -p /tmp/test-results
+      - checkout
+      - run: echo "Hello world!"
