@@ -7,4 +7,4 @@ jobs:
       - checkout
       - run: |
          echo "Hello world!"
-         ./scripts/install_grafana.sh
+
