@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: muryanto1/mycentos7:mycentos7withgit
+      - image: centos7
     steps:
       - checkout
       - run: |
