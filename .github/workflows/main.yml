@@ -1,0 +1,11 @@
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build docker images
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build grafana image
+        run: docker build -f Dockerfile.grafana -t safecast/grafana:latest .
