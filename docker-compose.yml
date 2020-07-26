@@ -3,7 +3,7 @@ services:
   proxy:
     image: nginx:1.19
     environment:
-      - KIBANA_ENDPOINT
+      - KIBANA_ENDPOINT=https://5bc3d4f7330a4459881197a85659caf5.us-west-2.aws.found.io:9243
       - KIBANA_BASIC_AUTH
     ports:
       - 8000:80
