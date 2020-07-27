@@ -1,3 +1,5 @@
+name: Main
+
 on: [push]
 
 jobs:
@@ -7,5 +9,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Build grafana image
-        run: docker build -f Dockerfile.grafana -t safecast/grafana:latest .
+      - name: Push Grafana to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          dockerfile: Dockerfile.grafana
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: safecast/grafana
+          tag_with_ref: true
