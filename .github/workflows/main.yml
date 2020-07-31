@@ -19,5 +19,5 @@ jobs:
 #          repository: safecast/reporting2/grafana
 #          tag_with_ref: true
 #          tag_with_sha: true
-      - name: maybe zip
-        run: zip --help
+      - name: maybe python
+        run: python --version
