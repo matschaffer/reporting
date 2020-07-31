@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build docker images
+    name: Build and publish artifacts
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -19,5 +19,9 @@ jobs:
 #          repository: safecast/reporting2/grafana
 #          tag_with_ref: true
 #          tag_with_sha: true
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - name: maybe python
         run: python --version
