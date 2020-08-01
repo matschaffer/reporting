@@ -28,8 +28,11 @@ jobs:
 #          python -m pip install --upgrade pip
 #          pip install boto3 awsebcli awscli
 #          python ./scripts/package.py
+      - name: Set container sha
+        run: echo "::set-env name=CONTAINER_SHA::$(git rev-parse --short=7 HEAD)"
       - uses: actions/upload-artifact@v2
         with:
           name: sha-${{ env.CONTAINER_SHA }}
           path: |
             .
+            !.git
