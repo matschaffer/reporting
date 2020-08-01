@@ -36,3 +36,6 @@ jobs:
           path: |
             .
             !.git
+            !.gitignore
+            !.ebignore
+            !.github
