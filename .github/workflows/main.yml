@@ -30,6 +30,11 @@ jobs:
 #          python ./scripts/package.py
       - name: Set container sha
         run: echo "::set-env name=CONTAINER_SHA::$(git rev-parse --short=7 HEAD)"
+      - name: Update built images
+        run: |
+          sed -i \
+            's|docker.pkg.github.com/safecast/reporting2/grafana:latest|docker.pkg.github.com/safecast/reporting2/grafana:sha-${CONTAINER_SHA}|\
+            Dockerrun.aws.json
       - uses: actions/upload-artifact@v2
         with:
           name: sha-${{ env.CONTAINER_SHA }}
