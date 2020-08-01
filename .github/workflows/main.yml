@@ -30,5 +30,6 @@ jobs:
           python ./scripts/package.py
       - uses: actions/upload-artifact@v2
         with:
-          name: application-source-bundle
-          path: .elasticbeanstalk/app_versions/sha-${{ env.CONTAINER_SHA }}.zip
+          name: sha-${{ env.CONTAINER_SHA }}
+          path: |
+            .
