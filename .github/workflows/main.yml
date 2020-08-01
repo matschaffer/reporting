@@ -26,12 +26,17 @@ jobs:
           sed -i \
             "s|docker.pkg.github.com/safecast/reporting2/grafana:latest|docker.pkg.github.com/safecast/reporting2/grafana:sha-${CONTAINER_SHA}|"\
             Dockerrun.aws.json
+      - name: Create application bundle
+        run: |
+          zip -r sha-${CONTAINER_SHA}.zip . \
+          -x \
+            '.gitignore' \
+            '.git/*' \
+            '.idea/*' \
+            '.github/*' \
+            '.elasticbeanstalk/*' \
+            '.envrc'
       - uses: actions/upload-artifact@v2
         with:
           name: sha-${{ env.CONTAINER_SHA }}
-          path: |
-            .
-            !.git
-            !.gitignore
-            !.github
-            !.ebignore
+          path: sha-${{ env.CONTAINER_SHA }}.zip
