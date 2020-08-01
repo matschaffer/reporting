@@ -50,7 +50,7 @@
     },
     {
       "name": "grafana",
-      "image": "safecast/grafana:latest",
+      "image": "docker.pkg.github.com/safecast/reporting2/grafana:latest",
       "memoryReservation": 128,
       "essential": true,
       "portMappings": [
