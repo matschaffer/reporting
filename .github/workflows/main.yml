@@ -33,5 +33,5 @@ jobs:
             .
             !.git
             !.gitignore
-            !.ebignore
             !.github
+            !.ebignore
