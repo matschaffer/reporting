@@ -5,11 +5,14 @@ Builds a zip package for multi-container elastic beanstalk environments
 """
 
 import logging
+import os
 import subprocess
-import sys
 import ebcli.core.fileoperations as fileoperations
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+if not os.path.exists('.elasticbeanstalk'):
+    os.mkdir('.elasticbeanstalk')
 
 sha = subprocess.check_output(['git', 'rev-parse', '--short=7', 'HEAD']).decode('utf-8').rstrip()
 file_name = 'sha-' + sha + '.zip'
