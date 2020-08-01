@@ -31,4 +31,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: application-source-bundle
-          path: .elasticbeanstalk/app_versions/sha-*.zip
+          path: .elasticbeanstalk/app_versions/sha-${CONTAINER_SHA}.zip

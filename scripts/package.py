@@ -15,6 +15,8 @@ if not os.path.exists('.elasticbeanstalk'):
     os.mkdir('.elasticbeanstalk')
 
 sha = subprocess.check_output(['git', 'rev-parse', '--short=7', 'HEAD']).decode('utf-8').rstrip()
+print('::set-env name=CONTAINER_SHA::{}'.format(sha))
+
 file_name = 'sha-' + sha + '.zip'
 file_path = fileoperations.get_zip_location(file_name)
 
