@@ -9,25 +9,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Push Grafana to GitHub Packages
-        uses: docker/build-push-action@v1
-        with:
-          dockerfile: Dockerfile.grafana
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: safecast/reporting2/grafana
-          tag_with_ref: true
-          tag_with_sha: true
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Build application source bundle
-        run: |
-          python -m pip install --upgrade pip
-          pip install boto3 awsebcli awscli
-          python ./scripts/package.py
+#      - name: Push Grafana to GitHub Packages
+#        uses: docker/build-push-action@v1
+#        with:
+#          dockerfile: Dockerfile.grafana
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GITHUB_TOKEN }}
+#          registry: docker.pkg.github.com
+#          repository: safecast/reporting2/grafana
+#          tag_with_ref: true
+#          tag_with_sha: true
+#      - name: Set up Python
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: 3.8
+#      - name: Build application source bundle
+#        run: |
+#          python -m pip install --upgrade pip
+#          pip install boto3 awsebcli awscli
+#          python ./scripts/package.py
       - uses: actions/upload-artifact@v2
         with:
           name: sha-${{ env.CONTAINER_SHA }}
