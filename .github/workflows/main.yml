@@ -33,7 +33,7 @@ jobs:
       - name: Update built images
         run: |
           sed -i \
-            's|docker.pkg.github.com/safecast/reporting2/grafana:latest|docker.pkg.github.com/safecast/reporting2/grafana:sha-${CONTAINER_SHA}|\
+            "s|docker.pkg.github.com/safecast/reporting2/grafana:latest|docker.pkg.github.com/safecast/reporting2/grafana:sha-${CONTAINER_SHA}|"\
             Dockerrun.aws.json
       - uses: actions/upload-artifact@v2
         with:
