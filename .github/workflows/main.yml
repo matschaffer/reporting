@@ -9,16 +9,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Push Grafana to GitHub Packages
-        uses: docker/build-push-action@v1
-        with:
-          dockerfile: Dockerfile.grafana
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: safecast/reporting2/grafana
-          tag_with_ref: true
-          tag_with_sha: true
+#      - name: Push Grafana to GitHub Packages
+#        uses: docker/build-push-action@v1
+#        with:
+#          dockerfile: Dockerfile.grafana
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GITHUB_TOKEN }}
+#          registry: docker.pkg.github.com
+#          repository: safecast/reporting2/grafana
+#          tag_with_ref: true
+#          tag_with_sha: true
       - name: Set container sha
         run: echo "::set-env name=CONTAINER_SHA::$(git rev-parse --short=7 HEAD)"
       - name: Configure AWS Credentials
