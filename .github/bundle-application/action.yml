@@ -1,0 +1,13 @@
+name: Bundle application
+description: Bundles a safecast-style elasticbeanstalk application
+inputs:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+outputs:
+  bundle:
+    description: 'The name of the uploaded bundle'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
