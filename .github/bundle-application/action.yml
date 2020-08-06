@@ -2,13 +2,13 @@ name: Bundle application
 description: Bundles a safecast-style elasticbeanstalk application
 inputs:
   app:
-    description: 'The name of the beanstalk app to upload to'
+    description: 'The name of the beanstalk app to upload to.'
     required: true
   s3_bucket:
-    description: 'The s3 bucket to upload the bundle to'
+    description: 'The s3 bucket to upload the bundle to.'
     required: true
-  container_image_NAME:
-    description: 'Container images to be replaced in Dockerrun.aws.json before bundling'
+  container_images:
+    description: 'Container name/image pairs to be replaced in Dockerrun.aws.json before building the app bundle.'
     required: false
 outputs:
   bundle:

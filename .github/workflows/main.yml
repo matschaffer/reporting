@@ -32,4 +32,5 @@ jobs:
         with:
             app: reporting
             s3_bucket: elasticbeanstalk-us-west-2-985752656544
-            container_image_grafana: docker.pkg.github.com/safecast/reporting2/grafana:sha-${{ env.CONTAINER_SHA }}
+            container_images: |
+              { "grafana": "docker.pkg.github.com/safecast/reporting2/grafana:sha-${{ env.CONTAINER_SHA }}" }

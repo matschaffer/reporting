@@ -7,13 +7,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 
 
 def replace_docker_images():
-    container_image_prefix = 'INPUT_CONTAINER_IMAGE_'
-
-    image_replacements = {
-        k.replace(container_image_prefix, '').lower(): v
-        for k, v in os.environ.items()
-        if k.startswith('INPUT_CONTAINER_IMAGE')
-    }
+    image_replacements = json.loads(os.environ['INPUT_CONTAINER_IMAGES'])
 
     with open('Dockerrun.aws.json') as f:
         data = json.load(f)
@@ -39,7 +33,7 @@ def build_filename():
     app = os.environ['INPUT_APP']
     ref = os.environ['GITHUB_REF']
     clean_branch_name = ref.replace('refs/', '').replace('heads/', '').replace('/', '_')
-    build_number = os.environ['GITHUB_RUN_NUMBER']
+    build_number = os.environ['GITHUB_RUN_ID']
     git_sha = os.environ['GITHUB_SHA']
     return "{}-{}-{}-{}.zip".format(app, clean_branch_name, build_number, git_sha)
 
