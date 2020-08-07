@@ -59,9 +59,9 @@ def build_description():
 def create_app_version(app, version_label, bucket, key):
     elasticbeanstalk = boto3.client('elasticbeanstalk')
     elasticbeanstalk.create_application_version(
-        app,
-        version_label,
-        build_description(),
+        ApplicationName=app,
+        VersionLabel=version_label,
+        Description=build_description(),
         SourceBundle={
             'S3Bucket': bucket,
             'S3Key': key
