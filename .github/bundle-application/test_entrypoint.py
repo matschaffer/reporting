@@ -39,4 +39,3 @@ def test_bundle_naming():
 
     os.environ['GITHUB_REF'] = 'refs/heads/tiles-tf'
     assert entrypoint.build_version_label() == 'unittest-tiles_tf-8675309-0123456789abcdef'
-
