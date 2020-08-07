@@ -24,8 +24,8 @@ def replace_docker_images():
         f.write(updated)
 
 
-def build_bundle(file_name):
-    file_path = fileoperations.get_zip_location(file_name)
+def build_bundle(version_label):
+    file_path = fileoperations.get_zip_location('{}.zip'.format(version_label))
     logging.info('Packaging application to %s', file_path)
     ignore_files = fileoperations.get_ebignore_list()
     fileoperations.io.log_info = lambda message: logging.debug(message)
@@ -72,12 +72,13 @@ def create_app_version(app, version_label, bucket, key):
 def main():
     replace_docker_images()
     version_label = build_version_label()
-    file_name = "{}.zip".format(version_label)
-    build_bundle(file_name)
+    build_bundle(version_label)
 
     app = os.environ['INPUT_APP']
     bucket = os.environ['INPUT_S3_BUCKET']
-    key = '.elasticbeanstalk/app_versions/{}/{}.zip'.format(app, file_name)
+
+    file_name = '.elasticbeanstalk/app_versions/{}/{}.zip'.format(app, version_label)
+    key = '{}/{}.zip'.format(app, version_label)
 
     upload_bundle(file_name, bucket, key)
     create_app_version(app, version_label, bucket, key)
