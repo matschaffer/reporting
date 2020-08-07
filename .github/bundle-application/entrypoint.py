@@ -77,7 +77,7 @@ def main():
 
     app = os.environ['INPUT_APP']
     bucket = os.environ['INPUT_S3_BUCKET']
-    key = '{}/{}.zip'.format(app, file_name)
+    key = '.elasticbeanstalk/app_versions/{}/{}.zip'.format(app, file_name)
 
     upload_bundle(file_name, bucket, key)
     create_app_version(app, version_label, bucket, key)
