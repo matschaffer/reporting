@@ -1,10 +1,11 @@
-import os
+import json
 import logging
+import os
 import re
+from urllib.parse import urlparse
 
 import boto3
 import ebcli.core.fileoperations as fileoperations
-import json
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
@@ -25,11 +26,14 @@ def replace_docker_images():
 
 
 def build_bundle(version_label):
+    if not os.path.exists('.elasticbeanstalk'):
+        os.mkdir('.elasticbeanstalk')
     file_path = fileoperations.get_zip_location('{}.zip'.format(version_label))
     logging.info('Packaging application to %s', file_path)
     ignore_files = fileoperations.get_ebignore_list()
     fileoperations.io.log_info = lambda message: logging.debug(message)
     fileoperations.zip_up_project(file_path, ignore_list=ignore_files)
+    return '.elasticbeanstalk/app_versions/{}.zip'.format(version_label)
 
 
 def build_version_label():
@@ -47,16 +51,23 @@ def build_version_label():
     return "{}-{}-{}-{}".format(app, clean_branch_name, build_number, git_sha)
 
 
-def upload_bundle(file_name, bucket, app_version):
-    s3 = boto3.client('s3')
-    s3.upload_file(file_name, bucket, app_version)
-
-
 def build_description():
-    return "description"
+    hostname = urlparse(os.environ['GITHUB_SERVER_URL']).netloc
+    repository = os.environ['GITHUB_REPOSITORY']
+    run_id = os.environ['GITHUB_RUN_ID']
+    return '{}/{}/actions/runs/{}'.format(hostname, repository, run_id)
+
+
+def upload_bundle(file_name, bucket, app):
+    key = '{}/{}'.format(app, os.path.basename(file_name))
+    # noinspection PyUnresolvedReferences
+    s3 = boto3.client('s3')
+    s3.upload_file(file_name, bucket, key)
+    return key
 
 
 def create_app_version(app, version_label, bucket, key):
+    # noinspection PyUnresolvedReferences
     elasticbeanstalk = boto3.client('elasticbeanstalk')
     elasticbeanstalk.create_application_version(
         ApplicationName=app,
@@ -72,15 +83,12 @@ def create_app_version(app, version_label, bucket, key):
 def main():
     replace_docker_images()
     version_label = build_version_label()
-    build_bundle(version_label)
+    file_name = build_bundle(version_label)
 
     app = os.environ['INPUT_APP']
     bucket = os.environ['INPUT_S3_BUCKET']
 
-    file_name = '.elasticbeanstalk/app_versions/{}.zip'.format(version_label)
-    key = '{}/{}.zip'.format(app, version_label)
-
-    upload_bundle(file_name, bucket, key)
+    key = upload_bundle(file_name, bucket, app)
     create_app_version(app, version_label, bucket, key)
 
 
