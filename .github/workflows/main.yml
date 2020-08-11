@@ -32,6 +32,6 @@ jobs:
         with:
             app: reporting
             s3_bucket: elasticbeanstalk-us-west-2-985752656544
-            authentication_key: .dockercfg
+            authentication_key: .docker/config.json.auths
             container_images: |
               { "grafana": "docker.pkg.github.com/safecast/reporting2/grafana:sha-${{ env.CONTAINER_SHA }}" }
