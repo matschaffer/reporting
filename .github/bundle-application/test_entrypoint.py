@@ -28,6 +28,19 @@ def test_replace_docker_images(tmpdir):
             assert [c['image'] for c in data['containerDefinitions'] if c['name'] == 'grafana'] == ['updated_image']
 
 
+def test_add_authentication_key(tmpdir):
+    with tmpdir.as_cwd():
+        with open('Dockerrun.aws.json', 'w') as f:
+            json.dump({}, f)
+
+        os.environ['INPUT_AUTHENTICATION_KEY'] = '.dockercfg'
+        entrypoint.add_authentication_key(bucket)
+
+        with open('Dockerrun.aws.json') as f:
+            data = json.load(f)
+            assert data['authentication'] == {'bucket': bucket, 'key': '.dockercfg'}
+
+
 def test_build_bundle(tmpdir):
     with tmpdir.as_cwd():
         path = entrypoint.build_bundle(version_label)

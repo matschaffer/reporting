@@ -19,10 +19,24 @@ def replace_docker_images():
             name = container_definition['name']
             if name in image_replacements.keys():
                 container_definition['image'] = image_replacements[name]
-        updated = json.dumps(data, indent=4, sort_keys=True)
 
     with open('Dockerrun.aws.json', 'w') as f:
-        f.write(updated)
+        json.dump(data, f, indent=4, sort_keys=True)
+
+
+def add_authentication_key(bucket):
+    if 'INPUT_AUTHENTICATION_KEY' not in os.environ:
+        return
+
+    with open('Dockerrun.aws.json') as f:
+        data = json.load(f)
+        data['authentication'] = {
+            'bucket': bucket,
+            'key': os.environ['INPUT_AUTHENTICATION_KEY']
+        }
+
+    with open('Dockerrun.aws.json', 'w') as f:
+        json.dump(data, f, indent=4, sort_keys=True)
 
 
 def build_bundle(version_label):
@@ -81,12 +95,13 @@ def create_app_version(app, version_label, bucket, key):
 
 
 def main():
-    replace_docker_images()
-    version_label = build_version_label()
-    file_name = build_bundle(version_label)
-
     app = os.environ['INPUT_APP']
     bucket = os.environ['INPUT_S3_BUCKET']
+
+    replace_docker_images()
+    add_authentication_key(bucket)
+    version_label = build_version_label()
+    file_name = build_bundle(version_label)
 
     key = upload_bundle(file_name, bucket, app)
     create_app_version(app, version_label, bucket, key)
