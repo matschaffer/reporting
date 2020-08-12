@@ -81,7 +81,13 @@
           "containerPort": 8081
         }
       ],
-      "mountPoints": []
+      "mountPoints": [],
+      "extraHosts": [
+        {
+          "hostname": "grafana",
+          "ipAddress": "172.17.0.1"
+        }
+      ]
     }
   ]
 }
