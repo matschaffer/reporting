@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name kibana*;
+    server_name kibana.* kibana-dev.*;
 
     location / {
       proxy_pass ${KIBANA_ENDPOINT};
