@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name kibana.safecast.org kibana.safecast.cc kibana.vcap.me;
+    server_name kibana*;
 
     location / {
       proxy_pass ${KIBANA_ENDPOINT};
