@@ -6,42 +6,42 @@ A quilt of applications used for reporting in the [Safecast](https://safecast.or
 
 ### Grafana
 
-Hosted on-instance in docker, available at https://grafana.safecast.cc
+Hosted on-instance, available at https://grafana.safecast.cc.
 
 ### Kibana
 
 A proxy to https://cloud.elastic.co to provide anonymous data access. Available at https://kibana.safecast.cc
 
-## Dev
+## Local Dev
 
 ```
 > docker-compose up
 ```
 
-Then access the apps under the `vcap.me` domain which resolves to 127.0.0.1
+Then access the apps using a hostname that starts with grafana or kibana. For example:
 
-- http://kibana.vcap.me:8000/
-- http://grafana.vcap.me:8000/
+- http://grafana.127.0.0.1.xip.io:8000/
+- http://kibana.127.0.0.1.xip.io:8000/
 
-If your docker isn't 127.0.0.1, update the `proxy/templates` to use some other overridable server names.
+Replace the 127.0.0.1 if your docker host is accessible via a different IP.
+
+Note that the grafana db comes up empty when running locally, so you'll need to configure data sources and dashboards if you want to do a thorough test.
+
+Or deploy to the dev environment to run using all the data sources and dashboards found on https://grafana.safecast.cc/ 
 
 ## Deployment
 
-First build & push and updated container
+Github actions will build & publish a bundle to the `reporting` beanstalk app. You can then deploy this with [safecast_deploy](https://github.com/safecast/safecast_deploy) by name.
+
+For example:
 
 ```
-docker login docker.pkg.github.com # use github user name and api token
+> ./deploy.py same_env reporting dev reporting-master-208670495-e72e974414e7574d7d74271d50f42695959343c4
+``` 
 
-docker build -f Dockerfile.grafana -t docker.pkg.github.com/safecast/reporting2/grafana:latest .
-docker push docker.pkg.github.com/safecast/reporting2/grafana:latest
-```
+## Ops
 
-Then trigger a deploy
+ECS manages the containers on EC2, so the names that appear in `docker ps` are a little wild.
 
-```
-# deploy dev env
-> eb deploy $(eb list | grep dev)
+[z_docker.sh](profile.d/z_docker.sh) adds `dlog` and `dexec` helpers to check docker container output or exec into a container via partial string match.
 
-# deploy prd env
-> eb deploy $(eb list | grep prd)
-```
