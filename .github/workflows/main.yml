@@ -1,6 +1,10 @@
 name: Main
 
-on: pull_request_target
+on:
+  push:
+    branches:
+      - master
+  pull_request_target: ~
 
 jobs:
   build:
