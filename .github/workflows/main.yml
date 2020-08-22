@@ -1,10 +1,6 @@
 name: Main
 
-on:
-  push:
-    branches:
-      - master
-  pull_request_target: ~
+on: [push, pull_request]
 
 jobs:
   build:
@@ -13,29 +9,32 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Push Grafana to GitHub Packages
-        uses: docker/build-push-action@v1
-        with:
-          dockerfile: Dockerfile.grafana
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: safecast/reporting2/grafana
-          tag_with_ref: true
-          tag_with_sha: true
-      - name: Set container sha
-        run: echo "::set-env name=CONTAINER_SHA::$(git rev-parse --short=7 HEAD)"
+      - name: Set container details
+        run: |
+          echo "::set-env name=REGISTRY::docker.pkg.github.com"
+          echo "::set-env name=REPOSITORY_BASE::safecast/reporting2"
+          echo "::set-env name=TAG::sha-$(git rev-parse --short=7 HEAD)"
+      - name: Build containers
+        run: |
+          docker build -t "${REGISTRY}/${REPOSITORY_BASE}/grafana:${TAG}" - < Dockerfile.grafana
+      - name: Push containers
+        if: github.repository == 'Safecast/reporting'
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login https://docker.pkg.github.com -u ${{ github.actor }}
+          docker push "${REGISTRY}/${REPOSITORY_BASE}/grafana:${TAG}"
       - name: Configure AWS Credentials
+        if: github.repository == 'Safecast/reporting'
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
       - name: Create application bundle
+        if: github.repository == 'Safecast/reporting'
         uses: ./.github/bundle-application
         with:
             app: reporting
             s3_bucket: elasticbeanstalk-us-west-2-985752656544
             authentication_key: .docker/config.json.auths
             container_images: |
-              { "grafana": "docker.pkg.github.com/safecast/reporting2/grafana:sha-${{ env.CONTAINER_SHA }}" }
+              { "grafana": "${{ env.REGISTRY }}/${{ env.REPOSITORY_BASE }}/grafana:${{ env.TAG }}" }
