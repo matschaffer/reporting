@@ -38,7 +38,7 @@ jobs:
           aws-region: us-west-2
       - name: Create application bundle
         if: env.SECRETS_AVAILABLE
-        uses: ./.github/bundle-application
+        uses: Safecast/github-actions/bundle-application
         with:
             app: reporting
             s3_bucket: elasticbeanstalk-us-west-2-985752656544
