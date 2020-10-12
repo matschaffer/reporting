@@ -1,5 +1,8 @@
 .git/
 .github/
-.elasticbeanstalk/
 .gitignore
+.elasticbeanstalk/
+.idea/
+*.iml
 .env
+.envrc

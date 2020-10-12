@@ -1,1 +1,3 @@
 .envrc
+.elasticbeanstalk/app_versions
+.elasticbeanstalk/saved_configs
