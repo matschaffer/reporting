@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  proxy:
+    image: nginx:1.19
+    environment:
+      - KIBANA_ENDPOINT=https://5bc3d4f7330a4459881197a85659caf5.us-west-2.aws.found.io:9243
+      - KIBANA_BASIC_AUTH
+    ports:
+      - 8000:80
+      - 8443:443
+    volumes:
+      - ./proxy/templates:/etc/nginx/templates
+      - ./proxy/web:/usr/share/nginx/html
+  grafana:
+    build:
+      context: .
+      dockerfile: Dockerfile.grafana
+    volumes:
+      - ./grafana:/etc/grafana
+    environment:
+      GF_LOG_FILTERS: rendering:debug
+      GF_DATABASE_TYPE: sqlite3
+  renderer:
+    image: grafana/grafana-image-renderer:2.0.0
+    environment:
+      ENABLE_METRICS: 'true'
+  library:
+    image: safecast/library:latest

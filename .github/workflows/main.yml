@@ -1,0 +1,48 @@
+name: Main
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build and publish artifacts
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set container details
+        run: |
+          echo "::set-env name=REGISTRY::docker.pkg.github.com"
+          REPOSITORY_BASE=$(echo "${{ github.repository }}" | perl -ne 'print lc')
+          echo "::set-env name=REPOSITORY_BASE::${REPOSITORY_BASE}"
+          echo "::set-env name=TAG::sha-$(git rev-parse --short=7 HEAD)"
+      - name: Build containers
+        run: |
+          docker build -t "${REGISTRY}/${REPOSITORY_BASE}/grafana:${TAG}" - < Dockerfile.grafana
+      - name: Check if secrets are available for publishing
+        run: echo "::set-env name=SECRETS_AVAILABLE::${{ secrets.AWS_ACCESS_KEY_ID }}"
+      - name: Push containers
+        if: env.SECRETS_AVAILABLE
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login "${REGISTRY}" -u ${{ github.actor }} --password-stdin
+          docker push "${REGISTRY}/${REPOSITORY_BASE}/grafana:${TAG}"
+      - name: Configure AWS Credentials
+        if: env.SECRETS_AVAILABLE
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+      - name: Create application bundle
+        if: env.SECRETS_AVAILABLE
+        uses: Safecast/github-actions/bundle-application@v1
+        with:
+            app: reporting
+            s3_bucket: elasticbeanstalk-us-west-2-985752656544
+            authentication_key: .docker/config.json.auths
+            container_images: |
+              { "grafana": "${{ env.REGISTRY }}/${{ env.REPOSITORY_BASE }}/grafana:${{ env.TAG }}" }

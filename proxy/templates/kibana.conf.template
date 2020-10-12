@@ -1,0 +1,11 @@
+server {
+    listen 80;
+
+    server_name kibana.* kibana-dev.*;
+
+    location / {
+      proxy_pass ${KIBANA_ENDPOINT};
+      proxy_set_header X-Forwarded-Host $host;
+      proxy_set_header Authorization "Basic ${KIBANA_BASIC_AUTH}";
+    }
+}

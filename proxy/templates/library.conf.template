@@ -1,0 +1,9 @@
+server {
+    listen 80;
+
+    server_name library.* library-dev.*;
+
+    location / {
+      proxy_pass http://library:5000;
+    }
+}

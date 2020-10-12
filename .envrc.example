@@ -1,0 +1,3 @@
+source_up
+
+export KIBANA_BASIC_AUTH=...
