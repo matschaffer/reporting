@@ -1,4 +1,8 @@
 version: "3.8"
+
+volumes:
+  grafana_data: {}
+
 services:
   proxy:
     image: nginx:1.19
@@ -17,6 +21,8 @@ services:
       dockerfile: Dockerfile.grafana
     volumes:
       - ./grafana:/etc/grafana
+#      - grafana_data:/var/lib/grafana
+#      - ../grafana-map-panel:/var/lib/grafana/plugins/grafana-map-panel
     environment:
       GF_LOG_FILTERS: rendering:debug
       GF_DATABASE_TYPE: sqlite3

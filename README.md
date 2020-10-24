@@ -33,8 +33,8 @@ Then up the conatiners:
 
 Then access the apps using a hostname that starts with grafana or kibana. For example:
 
-- https://grafana.127.0.0.1.xip.io:8000/
-- https://kibana.127.0.0.1.xip.io:8000/
+- https://grafana.127.0.0.1.nip.io:8000/
+- https://kibana.127.0.0.1.nip.io:8000/
 
 (or http to port 8000)
 
