@@ -21,11 +21,12 @@ services:
       dockerfile: Dockerfile.grafana
     volumes:
       - ./grafana:/etc/grafana
-#      - grafana_data:/var/lib/grafana
+      - grafana_data:/data
 #      - ../grafana-map-panel:/var/lib/grafana/plugins/grafana-map-panel
     environment:
       GF_LOG_FILTERS: rendering:debug
       GF_DATABASE_TYPE: sqlite3
+      GF_DATABASE_PATH: /data/grafana.db
   renderer:
     image: grafana/grafana-image-renderer:2.0.0
     environment:
