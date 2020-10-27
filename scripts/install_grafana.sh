@@ -17,7 +17,7 @@ sudo yum install grafana-7.3.0~09f951b5pre-1.x86_64.rpm
 /usr/sbin/grafana-cli plugins install dalvany-image-panel
 
 
-sudo /usr/sbin/grafana-cli --pluginUrl https://github.com/panodata/grafana-map-panel/archive/0.12.0.zip plugins install grafana-map-panel
+sudo /usr/sbin/grafana-cli --pluginUrl https://github.com/panodata/grafana-map-panel/releases/download/0.12.0/grafana-map-panel-0.12.0.zip plugins install grafana-map-panel
 
 
 /sbin/chkconfig --add grafana-server
