@@ -22,7 +22,6 @@ services:
     volumes:
       - ./grafana:/etc/grafana
       - grafana_data:/data
-#      - ../grafana-map-panel:/var/lib/grafana/plugins/grafana-map-panel
     environment:
       GF_LOG_FILTERS: rendering:debug
       GF_DATABASE_TYPE: sqlite3
