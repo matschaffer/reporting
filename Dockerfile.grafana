@@ -1,4 +1,4 @@
-FROM grafana/grafana:7.2.2
+FROM grafana/grafana:master
 
 RUN grafana-cli plugins install petrslavotinek-carpetplot-panel && \
     grafana-cli plugins install grafana-googlesheets-datasource && \
