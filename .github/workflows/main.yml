@@ -17,11 +17,11 @@ jobs:
         uses: actions/checkout@v2
       - name: Set container details
         run: |
-          echo
-          echo "REGISTRY=docker.pkg.github.com" >> $GITHUB_ENV
+          cat <<VARS >>$GITHUB_ENV
+          REGISTRY=docker.pkg.github.com
           REPOSITORY_BASE=$(echo "${{ github.repository }}" | perl -ne 'print lc')
-          echo "REPOSITORY_BASE=${REPOSITORY_BASE}" >> $GITHUB_ENV
-          echo "TAG=sha-$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
+          TAG=sha-$(git rev-parse --short=7 HEAD)
+          VARS
       - name: Build containers
         run: |
           docker build --pull -t "${REGISTRY}/${REPOSITORY_BASE}/grafana:${TAG}" - < Dockerfile.grafana
