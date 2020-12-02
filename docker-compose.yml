@@ -15,6 +15,9 @@ services:
     volumes:
       - ./proxy/templates:/etc/nginx/templates
       - ./proxy/web:/usr/share/nginx/html
+    depends_on:
+      - grafana
+      - library
   grafana:
     build:
       context: .
