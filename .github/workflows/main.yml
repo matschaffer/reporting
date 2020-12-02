@@ -23,7 +23,7 @@ jobs:
           echo "::set-env name=TAG::sha-$(git rev-parse --short=7 HEAD)"
       - name: Build containers
         run: |
-          docker build -t "${REGISTRY}/${REPOSITORY_BASE}/grafana:${TAG}" - < Dockerfile.grafana
+          docker build --pull -t "${REGISTRY}/${REPOSITORY_BASE}/grafana:${TAG}" - < Dockerfile.grafana
       - name: Check if secrets are available for publishing
         run: echo "::set-env name=SECRETS_AVAILABLE::${{ secrets.AWS_ACCESS_KEY_ID }}"
       - name: Push containers
