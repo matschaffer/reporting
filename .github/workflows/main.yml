@@ -17,15 +17,16 @@ jobs:
         uses: actions/checkout@v2
       - name: Set container details
         run: |
-          echo "::set-env name=REGISTRY::docker.pkg.github.com"
+          echo
+          echo "REGISTRY=docker.pkg.github.com" >> $GITHUB_ENV
           REPOSITORY_BASE=$(echo "${{ github.repository }}" | perl -ne 'print lc')
-          echo "::set-env name=REPOSITORY_BASE::${REPOSITORY_BASE}"
-          echo "::set-env name=TAG::sha-$(git rev-parse --short=7 HEAD)"
+          echo "REPOSITORY_BASE=${REPOSITORY_BASE}" >> $GITHUB_ENV
+          echo "TAG=sha-$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
       - name: Build containers
         run: |
           docker build --pull -t "${REGISTRY}/${REPOSITORY_BASE}/grafana:${TAG}" - < Dockerfile.grafana
       - name: Check if secrets are available for publishing
-        run: echo "::set-env name=SECRETS_AVAILABLE::${{ secrets.AWS_ACCESS_KEY_ID }}"
+        run: echo "SECRETS_AVAILABLE=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
       - name: Push containers
         if: env.SECRETS_AVAILABLE
         run: |
