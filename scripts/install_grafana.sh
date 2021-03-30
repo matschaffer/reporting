@@ -7,8 +7,8 @@ if rpm -q grafana; then
   exit 0
 fi
 
-wget https://dl.grafana.com/oss/release/grafana-7.5.2-1.x86_64.rpm
-sudo yum install grafana-7.5.2-1.x86_64.rpm
+wget https://dl.grafana.com/oss/release/grafana-7.5.1-1.x86_64.rpm
+sudo yum install grafana-7.5.1-1.x86_64.rpm
 
 /usr/sbin/grafana-cli plugins install petrslavotinek-carpetplot-panel
 /usr/sbin/grafana-cli plugins install grafana-worldmap-panel
