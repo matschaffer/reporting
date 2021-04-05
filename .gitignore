@@ -1,4 +1,4 @@
-.envrc
+.env
 .elasticbeanstalk/app_versions
 .elasticbeanstalk/saved_configs
 docker-compose.override.yml
